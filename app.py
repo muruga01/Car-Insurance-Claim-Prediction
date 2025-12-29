@@ -1,5 +1,3 @@
-# Updated app.py - Engine Displacement as Dropdown with Realistic Options from Dataset
-
 import streamlit as st
 import joblib
 import pandas as pd
