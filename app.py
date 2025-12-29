@@ -1,20 +1,3 @@
-# app.py - Simplified Streamlit App with ONLY 10 Key Inputs
-# This version uses the TOP 10 most predictive features based on typical XGBoost results for this dataset.
-# Top features usually are:
-# 1. policy_tenure
-# 2. age_of_policyholder
-# 3. age_of_car
-# 4. ncap_rating
-# 5. population_density
-# 6. make
-# 7. airbags
-# 8. displacement
-# 9. is_speed_alert (Yes/No)
-# 10. turning_radius
-
-# Run with: streamlit run app.py
-# Ensure 'car_insurance_claim_model.pkl' is in the same directory.
-
 import streamlit as st
 import joblib
 import pandas as pd
@@ -25,7 +8,7 @@ model = joblib.load('car_insurance_claim_model.pkl')
 st.title("🚗 Car Insurance Claim Prediction")
 st.markdown("""
 ### Simplified Prediction Form (Only 10 Key Questions)
-This version uses the **10 most important features** identified from the model for quick and accurate predictions.
+This version uses the **10 most important features** for quick and accurate predictions.
 """)
 
 st.info("Fill in these 10 fields for an instant claim risk prediction.")
@@ -62,24 +45,21 @@ with col2:
                                help="Smaller radius = easier to maneuver")
     
     is_speed_alert = st.selectbox("10. Speed Alert System", options=["Yes", "No"], index=0,
-                                 help="Audible alert when exceeding speed limit")
+                                  help="Audible alert when exceeding speed limit")
 
 if st.button("🔮 Predict Claim Risk", type="primary"):
-    # Create full input dictionary with ALL original columns
-    # Missing columns will be filled with the most common (mode) or median values from training data
-    # This ensures compatibility with the trained pipeline
-    
+    # Fixed: Correct column name is 'is_power_door_lock' (singular)
     input_data = {
         'policy_tenure': policy_tenure,
         'age_of_car': age_of_car,
         'age_of_policyholder': age_of_policyholder,
-        'area_cluster': 'C1',  # default common value
+        'area_cluster': 'C1',  # common default
         'population_density': population_density,
         'make': make,
-        'segment': 'B2',  # common segment
-        'model': 'M1',  # common model
+        'segment': 'B2',
+        'model': 'M1',
         'fuel_type': 'Petrol',
-        'max_torque': '113Nm@4400rpm',  # common value
+        'max_torque': '113Nm@4400rpm',
         'max_power': '88.7bhp@6000rpm',
         'engine_type': '1.2 L K12N Dualjet',
         'airbags': airbags,
@@ -104,7 +84,7 @@ if st.button("🔮 Predict Claim Risk", type="primary"):
         'is_rear_window_washer': 'No',
         'is_rear_window_defogger': 'No',
         'is_brake_assist': 'Yes',
-        'is_power_door_lock': 'Yes',
+        'is_power_door_locks': 'Yes',
         'is_central_locking': 'Yes',
         'is_power_steering': 'Yes',
         'is_driver_seat_height_adjustable': 'Yes',
@@ -114,10 +94,9 @@ if st.button("🔮 Predict Claim Risk", type="primary"):
         'ncap_rating': ncap_rating
     }
 
-    # Convert to DataFrame
     input_df = pd.DataFrame([input_data])
 
-    # Predict
+    # Prediction
     probability = model.predict_proba(input_df)[0][1]
     prediction = model.predict(input_df)[0]
 
