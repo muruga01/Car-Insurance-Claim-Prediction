@@ -66,8 +66,25 @@ def clean_feature_name(name):
     
     return readable_map.get(name.lower(), name.title())
 
-# Tabs
+if 'active_tab' not in st.session_state:
+    st.session_state.active_tab = "📊 Overview"  # Default tab
+
+# Create tabs
 tab1, tab2, tab3, tab4 = st.tabs(["📊 Overview", "🔍 Data Exploration", "🤖 Model Insights", "🔮 Predict Claim"])
+
+# Map tabs to their names for easy handling
+tabs_map = {
+    tab1: "📊 Overview",
+    tab2: "🔍 Data Exploration",
+    tab3: "🤖 Model Insights",
+    tab4: "🔮 Predict Claim"
+}
+
+# Detect which tab is currently active and update session state
+for tab, name in tabs_map.items():
+    if tab._is_selected:  # Internal check for active tab
+        st.session_state.active_tab = name
+        break
 
 # ==================== TAB 1: Overview ====================
 with tab1:
@@ -149,7 +166,6 @@ with tab3:
     fig_imp.update_layout(height=500, yaxis={'categoryorder': 'total ascending'})
     st.plotly_chart(fig_imp, use_container_width=True)
     
-# ==================== TAB 4: Predict Claim ====================
 # ==================== TAB 4: Predict Claim ====================
 with tab4:
     st.header("Single Customer Claim Prediction")
