@@ -1,0 +1,7 @@
+*.pkl
+*.h5
+*.joblib
+train.csv
+test.csv
+__pycache__
+.streamlit/
