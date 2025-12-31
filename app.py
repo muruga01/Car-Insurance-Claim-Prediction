@@ -72,13 +72,13 @@ def clean_feature_name(name):
     
     return readable_map.get(name.lower(), name.title())
 
-# === Sidebar Tab Selector (Controls active tab reliably) ===
-st.sidebar.header("Navigation")
-tab_selection = st.sidebar.radio(
-    "Go to",
-    ["📊 Overview", "🔍 Data Exploration", "🤖 Model Insights", "🔮 Predict Claim"],
-    index=["📊 Overview", "🔍 Data Exploration", "🤖 Model Insights", "🔮 Predict Claim"].index(st.session_state.get('active_tab', "📊 Overview"))
-)
+# # === Sidebar Tab Selector (Controls active tab reliably) ===
+# st.sidebar.header("Navigation")
+# tab_selection = st.sidebar.radio(
+#     "Go to",
+#     ["📊 Overview", "🔍 Data Exploration", "🤖 Model Insights", "🔮 Predict Claim"],
+#     index=["📊 Overview", "🔍 Data Exploration", "🤖 Model Insights", "🔮 Predict Claim"].index(st.session_state.get('active_tab', "📊 Overview"))
+# )
 
 # Update session state
 st.session_state.active_tab = tab_selection
