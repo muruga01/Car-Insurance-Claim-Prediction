@@ -4,9 +4,14 @@ import plotly.express as px
 import joblib
 import numpy as np
 import re
+import os
+from urllib.request import urlretrieve
 
 # Page config
 st.set_page_config(page_title="Car Insurance Claim Analytics Dashboard", layout="wide")
+
+MODEL_URL = "https://drive.google.com/uc?export=download&id=1OnXQbocKohrJDl-R1YantsyWQZy6dy1I"
+MODEL_PATH = "car_insurance_lgb_tuned_final.pkl"
 
 # Load data and model
 @st.cache_data
@@ -14,10 +19,11 @@ def load_data():
     df = pd.read_csv('train.csv')
     return df
 
-@st.cache_resource
+@st.cache_resource(show_spinner="Downloading model (~300MB, first time only)... This may take 1-2 minutes.")
 def load_model():
-    model = joblib.load('car_insurance_lgb_tuned_final.pkl')
-    return model
+    if not os.path.exists(MODEL_PATH):
+        urlretrieve(MODEL_URL, MODEL_PATH)
+    return joblib.load(MODEL_PATH)
 
 df = load_data()
 model = load_model()
